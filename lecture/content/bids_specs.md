@@ -73,7 +73,6 @@ Within BIDS folders have to be structured and named in a specific way. The hiera
 - project/
     - code/
     - derivatives/
-    - phenotype/
     - sourcedata/
     - stimuli/
     - subject/
@@ -87,10 +86,6 @@ The **project** folder does not have to be named in a specific manner, but it sh
 **code**
 
 Here you can store any code relating to the presentation of stimuli, preprocessing of data etc.
-
-**phenotype**
-
-Here you can store, separated into individual files, any participant-level measurements (e.g., responses from questionnaires)
 
 **sourcedata**
 
@@ -224,41 +219,40 @@ We'll have a look at some real life implementations shortly using the public exa
 
 ### dataset_description.json:
 ```
-      Purpose: A structured JSON file containing essential metadata to identify and describe the dataset.
+      Purpose: Acts as a reference document for dataset context. Facilitates proper citation and acknowledgment. A structured JSON file containing essential metadata to identify and describe the dataset.
+
       Required Fields:
       Name: The title or name of the dataset.
       BIDSVersion: The version of the BIDS specification used.
       Authors: A list of individuals responsible for the dataset.
       Funding (optional): Information about the funding sources for the study.
       DatasetDOI (optional): The DOI or other persistent identifier for the dataset if published.
-      Importance:
-      Acts as a reference document for dataset context.
-      Facilitates proper citation and acknowledgment.
+      
 
 ```
 
 ### participants.tsv:
 ```
-        Purpose: A tab-separated values (TSV) file containing participant-level information.
+        Purpose: A tab-separated values (TSV) file containing participant-level information. Provides key grouping variables for analysis (e.g., age groups or experimental conditions).
+
         Required Columns:
             participant_id: Unique identifier for each participant.
-            Optional but recommended fields include age, sex, and group (e.g., control or experimental).
-        Importance:
-            Allows researchers to understand the demographic distribution of participants.
-            Provides key grouping variables for analysis (e.g., age groups or experimental conditions).
+            Optional but recommended fields include grouping (e.g., control or experimental) and demographic information like age, sex etc.
+
 ```
 
 ### sub-<label> directories:
 ```
-        Purpose: Each participant’s data is stored in its own directory, named with their unique identifier (e.g., sub-001).
+        Purpose:  Ensures clarity and avoids ambiguity in data association, allowing the use of prewritten processing pipelines. Each participant’s data is stored in its own directory, named with their unique identifier (e.g., sub-001).
+
         Structure:
-            Organized hierarchically to separate anatomical, functional, and other modalities.
-            Ensures clarity and avoids ambiguity in data association.
+            Organized hierarchically to separate anatomical, functional, other modalities.
+           
 ```
 
 ## Machine vs Human readable files
 
-Some of the info in a BIDS dataset is for your eyes, some is not!
+Some of the info in a BIDS dataset is for your eyes, some is not, i.e. made for processing pipelines to automatically read and operate on.
 
 | File                     | Human Readable   | Machine Readable   | Purpose                                                   |
 |:-------------------------|:-----------------|:-------------------|:----------------------------------------------------------|
@@ -273,15 +267,15 @@ Some of the info in a BIDS dataset is for your eyes, some is not!
 
 ## BIDS Conversion tools 
 
-Don't do this stuff by hand please. We have the technology!
+Don't do this stuff by hand, please. We have the technology!
 
-Converting neuroimaging data to the Brain Imaging Data Structure (BIDS) format is essential for standardization and interoperability. Several tools facilitate this conversion. You can habe a look at the [List of BIDS converters](https://bids.neuroimaging.io/benefits.html#converters) and find smething that works for you.
+Converting neuroimaging data to the Brain Imaging Data Structure (BIDS) format is essential for standardization and interoperability. Several tools facilitate this conversion. You can habe a look at the [List of BIDS converters](https://bids.neuroimaging.io/getting_started/tutorials/conversion/index.html) and find something that works for you.
 
 The most important tools will be:
 
 ### MNE-BIDS: EEG
 
-[MNE-BIDS](https://mne.tools/mne-bids/stable/auto_examples/convert_mne_sample.html#sphx-glr-auto-examples-convert-mne-sample-py) is a Python library that simplifies the conversion of electrophysiological data (e.g., MEG, EEG) into BIDS format. It integrates with MNE-Python, allowing users to read, write, and manipulate BIDS-compatible datasets. For a practical example of converting data using MNE-BIDS, refer to the MNE sample conversion tutorial.
+[MNE-BIDS](https://mne.tools/mne-bids/stable/auto_examples/convert_eeg_to_bids.html) is a Python library that simplifies the conversion of electrophysiological data (e.g., MEG, EEG) into BIDS format. It integrates with MNE-Python, allowing users to read, write, and manipulate BIDS-compatible datasets. For a practical example of converting data using MNE-BIDS, refer to the MNE sample conversion tutorial.
 
 ### HeudiConv: MRI
 
@@ -289,5 +283,16 @@ The most important tools will be:
 
 To facilitate the use of HeuDiConv without local installation, a Docker container is available: [HeuDiConv Docker Container](https://heudiconv.readthedocs.io/en/latest/container.html)
 
+### Manual Setup
 
-## Summary
+If you do want to start a new dataset directory using the BIDS specs and for the purpose of this tutorial, you can also paste the following script into a terminal and by providing a project folder name and hitting enter, an empty directory structure will be created. Feel free to add to the script to fit your needs.
+
+```
+read -p "Study name: " proj; parent="."; root="$parent/$proj"; \
+mkdir -p "$root"/{code,derivatives,sourcedata,stimuli,sub-01/anat} && \
+echo "{\"Name\": \"$proj\", \"BIDSVersion\": \"1.11.1\", \"DatasetType\": \"raw\"}" > "$root/dataset_description.json" && \
+echo "Done: $root"
+
+```
+
+
