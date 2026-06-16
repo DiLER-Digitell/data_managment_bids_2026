@@ -2,18 +2,16 @@
 
 ##  Motivation
 
-The Brain Imaging Data Structure (BIDS) is a simple and intuitive way to organize and describe data.
+Scientific projects, especially in the neurosciences are necessarily complex, being organized and providing proper documentation and meta information is a key factor for sharing and reusing data.
 
-Neuroimaging experiments produce complex datasets that are often organized inconsistently, even within the same lab. This lack of standardization can lead to misunderstandings, wasted time, and inefficiencies in data reuse and collaboration. Below, we outline the benefits of adopting a standardized approach, specifically the Brain Imaging Data Structure (BIDS)
+In the past most Neuroimaging datasets have often been organized inconsistently, even within the same lab. This lack of standardization can lead to a lack of interoperability of datasets and processing pipelines, in turn, leading to misunderstandings, wasted time, and inefficiencies in collaboration and reuse. Below, we outline the benefits of adopting a standardized approach, specifically the Brain Imaging Data Structure (BIDS)
 
-- scientific projects especially in the neuroscience are necessarily complex, being organized and providing proper documentation and meta information is a key factor
-- Early stage resaearchers have a distinct adavantage of not being bogged down by their already exiting backlogs
-
+Most of the Information presetened here is taken from the official documentation, which you can check out here: [bids.neuroimaging.io](bids.neuroimaging.io)
 <br>
 
 ### BIDS adavantages:
 
-### 1. Interoperability with Software:
+### 1. Interoperability: the main benefit
 - a growing number of data analysis tools and apps support BIDS-formatted datasets
 - adopting BIDS enhances compatibility and facilitates analysis workflows
 
@@ -33,11 +31,11 @@ Neuroimaging experiments produce complex datasets that are often organized incon
 ### 4. Alignment with FAIR Principles
 The adoption of BIDS aligns with the FAIR principles, enhancing the scientific impact of neuroimaging datasets:
 ```
-    F - Findable:
+    F - Findable: see #2
         BIDS encourages consistent naming conventions and metadata organization, making datasets easy to locate and index, whether within a lab or on public repositories.
     A - Accessible:
         Structured datasets, with rich metadata, are easily accessible to both humans and machines, increasing usability across tools and platforms.
-    I - Interoperable:
+    I - Interoperable: see #1
         By adhering to universal standards, BIDS ensures compatibility with a wide range of software and computational workflows, promoting cross-disciplinary collaboration.
     R - Reusable:
         Detailed metadata and standardization ensure datasets can be reused effectively, whether for replication, secondary analysis, or integration into meta-analyses.
@@ -46,21 +44,27 @@ The adoption of BIDS aligns with the FAIR principles, enhancing the scientific i
 
 ### The core specification
 
-The Brain Imaging Data Structure (BIDS) specification categorizes its files into REQUIRED, RECOMMENDED, and OPTIONAL, depending on their importance for data interpretation and utility. Here's a breakdown:
+The Brain Imaging Data Structure (BIDS) specification categorizes its files into REQUIRED, RECOMMENDED, and OPTIONAL, depending on their importance for data interpretation and utility. 
 
 *Requirement levels:*
 
-REQUIRED: Data cannot be be interpreted without this information (or the ambiguity is unacceptably high)
+REQUIRED: Data cannot be interpreted without this information (or the ambiguity is unacceptably high)
 
 RECOMMENDED: Interpretation/utility would be dramatically improved with this information
 
 OPTIONAL: Users and/or tools might find it useful to have this information
 
 
-*Modalities:*
-- passive neuroimaging techniques are organized by their own labels: eg, meg and ieeg
-- active neuroimaging techniques are organized by the respective category of brain data recorded, e.g for MRI: T1w, bold or dwi etc.
+*Modality vs. data type:*
 
+BIDS draws a distinction between these two concepts, and it's worth being precise about it.
+
+`Data type`: functional grouping of data that determines the *directory* a file will be integrated in. 
+- BIDS currently defines 16 data types: func, dwi, fmap, anat, perf, meg, eeg, ieeg, beh, pet, micr, nirs, motion, mrs, phenotype, and emg.
+
+
+`Modality`: category of brain data recorded by a file, indicated in the filename *suffix* we will assign to our recorded data. 
+- For MRI, individual pulse sequences count as distinct modalities (e.g. T1w, bold, dwi). For recording techniques like EEG, MEG, and iEEG, the technique is uniform enough that it defines the modality directly (eeg, meg, ieeg).
 
 ### Folder structure
 Within BIDS folders have to be structured and named in a specific way. The hierarchy is as follows:
@@ -78,7 +82,7 @@ Within BIDS folders have to be structured and named in a specific way. The hiera
 ```
 
 
-The **project** folder has not to be named in a specific manner, but it should be descriptive.
+The **project** folder does not have to be named in a specific manner, but it should be descriptive.
 
 **code**
 
@@ -86,26 +90,26 @@ Here you can store any code
 
 **phenotype**
 
-Here you can store spearated into individual files any participant level measurements (e.g. responses from questionnaires)
+Here you can store, separated into individual files, any participant-level measurements (e.g., responses from questionnaires)
 
 **sourcedata**
 
-Here you can store data before harmonization, reconstruction and/or file format conversion
+The *raw* data. Here you can store data before preprocessing and/or file format conversion etc..
 
 **stimuli**
 
-Self-explanatory, but here you can store your stimuli
+Self-explanatory. Here you can store the stimuli used during data collection.
 
 **subject-folder structure**
 
 ```
 subject/:
       - There should be one subject folder for each participant. Naming of subject folders has to be as follows:
-            sub-particpant label
-            exchange participant label with a label that is unique for each participant in your dataset (can be numbers and/or letters)
+            sub-participant label
+            exchange participant label with a label that is unique for each participant in your dataset (can be numbers and/or letters), most commonly sub-XX.
 
       session/
-            You only need this, if there are multiple sessions. A participant does not leave the scanner/headset during a session.
+            You only need this if there are multiple sessions. A participant does not leave the scanner/headset during a session.
             Sessions are named as follows:
             ses-session label
             exchange `session label` with a label that is unique (can be numbers and/or letters)
@@ -163,7 +167,7 @@ Derivatives are the following, they are supposed to be clearly labeled as such a
       - fundamentally similar to source data (e.g removing of artifacts etc.)
 
 
-There are several ways to organize them within your folder structure. For more information have a look [here](https://bids-website.readthedocs.io/en/latest/getting_started/folders_and_files/derivatives.html)
+There are several ways to organize them within your folder structure. For more information, have a look at the official documentation [here]([bids.neuroimaging.io](https://bids.neuroimaging.io/getting_started/folders_and_files/derivatives.html))
 
 
 ## Required Files
