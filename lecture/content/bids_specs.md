@@ -86,7 +86,7 @@ The **project** folder does not have to be named in a specific manner, but it sh
 
 **code**
 
-Here you can store any code
+Here you can store any code relating to the presentation of stimuli, preprocessing of data etc.
 
 **phenotype**
 
@@ -94,7 +94,7 @@ Here you can store, separated into individual files, any participant-level measu
 
 **sourcedata**
 
-The *raw* data. Here you can store data before preprocessing and/or file format conversion etc..
+Data source material in its original, non-BIDS form — for example original DICOMs or vendor-native recordings, before they were converted/curated into the BIDS layout. Note this is distinct from 'raw' data, which in BIDS terminology is the curated data inside the subject folders.
 
 **stimuli**
 
@@ -159,15 +159,18 @@ ds001
 
 
 ## Derivatives
-Derivatives are the following, they are supposed to be clearly labeled as such and be kept separate from your `raw/source` files. 
+
+Derivatives are outputs of any kind of processing steps or pipelines, be they processed files or metadata/descriptors used to explain/manage understanding and reuse of the processed dataset.
+
+Derivatives are supposed to be clearly labeled as such and be kept separate from your `raw` and `source` files. 
 
 - **processed data**:
-      - fundamentally different to the source data and therefore is likely to differ in datatypes from the original (e.g. masks and segmentations).
+      - fundamentally different to the source data and therefore is likely to differ in data types from the original (e.g. masks and segmentations).
 - **preprocessed data**:
       - fundamentally similar to source data (e.g removing of artifacts etc.)
 
 
-There are several ways to organize them within your folder structure. For more information, have a look at the official documentation [here]([bids.neuroimaging.io](https://bids.neuroimaging.io/getting_started/folders_and_files/derivatives.html))
+There are several ways to organize them within your folder structure. For a concrete example, have a look at the official documentation [here](https://bids.neuroimaging.io/getting_started/folders_and_files/derivatives.html#tour-of-a-bids-derivative)
 
 
 ## Required Files
