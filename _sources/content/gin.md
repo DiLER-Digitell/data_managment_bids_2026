@@ -206,14 +206,19 @@ Prerequisite: the repository must already exist on the GIN server. Create it onc
 git init
 git annex init "my-dataset"
 
-# Annex the large data files, stage the small ones in plain Git
+# Let's pretend to create a large datafile, annex it and still stage the small ones in plain Git
+mkdir data
+touch data/sub-01.md
 git annex add data/
 git add .
 
 # Record the commit
 git commit -m "Add session data"
 
-# Point at the GIN repo (already created on the server) and push
+```
+# Uploading data via Git/Git-Annex
+
+Let's point at the GIN repo (we already created on the server, otherwise do so now) and push:
 git remote add origin git@gin.g-node.org:YourUsername/your-repo-name.git
 git push origin main
 
