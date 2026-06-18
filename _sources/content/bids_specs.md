@@ -29,6 +29,8 @@ Most of the Information presetened here is taken from the official documentation
 <br>
 
 ### 4. Alignment with FAIR Principles
+
+Most importantly we adhere to standards of fair and transparent data managment.
 The adoption of BIDS aligns with the FAIR principles, enhancing the scientific impact of neuroimaging datasets:
 ```
     F - Findable: see #2
@@ -218,8 +220,10 @@ We'll have a look at some real life implementations shortly using the public exa
 
 
 ### dataset_description.json:
+
+`Purpose:` Acts as a reference document for dataset context. Facilitates proper citation and acknowledgment. A structured JSON file containing essential metadata to identify and describe the dataset.
 ```
-      Purpose: Acts as a reference document for dataset context. Facilitates proper citation and acknowledgment. A structured JSON file containing essential metadata to identify and describe the dataset.
+
 
       Required Fields:
       Name: The title or name of the dataset.
@@ -231,23 +235,78 @@ We'll have a look at some real life implementations shortly using the public exa
 
 ```
 
-### participants.tsv:
-```
-        Purpose: A tab-separated values (TSV) file containing participant-level information. Provides key grouping variables for analysis (e.g., age groups or experimental conditions).
+Example file:
 
+```
+{
+    "Name": "Speech Rate Study",
+    "BIDSVersion": "1.11.1",
+    "DatasetType": "raw",
+    "Authors": ["Jane Doe", "John Smith"],
+    "License": "CC0-BY",
+    "Acknowledgements": "Thanks to the lab team.",
+    "Funding": ["Something Grant 12345"]
+
+
+```
+
+### participants.tsv:
+
+`Purpose:` A tab-separated values (TSV) file containing participant-level information. Provides key grouping variables for analysis (e.g., age groups or experimental conditions). I.e if your dataset includes multiple conditions, groups etc. you should provide this info in a structured form, so that people can easily comprehend what has been done and machines (processing workflows) can easily parse this information and enable easier analysis etc.
+
+```
         Required Columns:
             participant_id: Unique identifier for each participant.
             Optional but recommended fields include grouping (e.g., control or experimental) and demographic information like age, sex etc.
 
 ```
 
-### sub-<label> directories:
-```
-        Purpose:  Ensures clarity and avoids ambiguity in data association, allowing the use of prewritten processing pipelines. Each participant’s data is stored in its own directory, named with their unique identifier (e.g., sub-001).
 
-        Structure:
-            Organized hierarchically to separate anatomical, functional, other modalities.
-           
+Example file: 
+```
+{
+participant_id	age	sex	group	handedness
+sub-01	24	F	control	right
+sub-02	31	M	patient	right
+sub-03	28	F	patient	left
+}
+```
+
+### sub-<label> directories:
+
+Purpose:  Ensures clarity and avoids ambiguity in data association, allowing the use of prewritten processing pipelines. Each participant’s data is stored in its own directory, named with their unique identifier (e.g., sub-001). Organized hierarchically to separate anatomical, functional, other modalities.
+
+### Filename anatomy
+BIDS filenames are built from key-value pairs (called entities) joined by underscores, ending in a suffix that states the data type, then the extension:
+
+`sub-<label>[_ses-<label>][_task-<label>][_run-<index>]_<suffix>.<ext>`
+
+The entities in [brackets] are optional, but their order is fixed by the spec — you can't reorder them. Every file starts with sub-<label>, and that label must match the folder name.
+
+```
+sub-01/
+    anat/
+        sub-01_T1w.nii.gz                          # anatomical, T1-weighted
+        sub-01_T2w.nii.gz
+    func/
+        sub-01_task-rest_bold.nii.gz               # functional run
+        sub-01_task-rest_bold.json                 # sidecar with metadata
+        sub-01_task-rest_events.tsv                # event timings
+    dwi/
+        sub-01_dwi.nii.gz                          # diffusion
+        sub-01_dwi.bval                            # b-values
+        sub-01_dwi.bvec                            # gradient directions
+```
+
+EEG example:
+
+```
+sub-01/
+    eeg/
+        sub-01_task-rest_eeg.edf                   # the recording (.edf/.bdf/.set/.vhdr...)
+        sub-01_task-rest_eeg.json                  # sidecar with sampling rate etc.
+        sub-01_task-rest_channels.tsv              # channel names, types, units
+        sub-01_task-rest_events.tsv                # event markers
 ```
 
 ## Machine vs Human readable files

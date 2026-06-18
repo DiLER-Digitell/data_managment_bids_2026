@@ -432,6 +432,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-description-json">dataset_description.json:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#participants-tsv">participants.tsv:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sub-directories">sub-<label> directories:</label></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filename-anatomy">Filename anatomy</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-vs-human-readable-files">Machine vs Human readable files</a></li>
@@ -488,7 +489,8 @@ document.write(`
 </section>
 <section id="alignment-with-fair-principles">
 <h3>4. Alignment with FAIR Principles<a class="headerlink" href="#alignment-with-fair-principles" title="Link to this heading">#</a></h3>
-<p>The adoption of BIDS aligns with the FAIR principles, enhancing the scientific impact of neuroimaging datasets:</p>
+<p>Most importantly we adhere to standards of fair and transparent data managment.
+The adoption of BIDS aligns with the FAIR principles, enhancing the scientific impact of neuroimaging datasets:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">F</span> <span class="o">-</span> <span class="n">Findable</span><span class="p">:</span> <span class="n">see</span> <span class="c1">#2</span>
         <span class="n">BIDS</span> <span class="n">encourages</span> <span class="n">consistent</span> <span class="n">naming</span> <span class="n">conventions</span> <span class="ow">and</span> <span class="n">metadata</span> <span class="n">organization</span><span class="p">,</span> <span class="n">making</span> <span class="n">datasets</span> <span class="n">easy</span> <span class="n">to</span> <span class="n">locate</span> <span class="ow">and</span> <span class="n">index</span><span class="p">,</span> <span class="n">whether</span> <span class="n">within</span> <span class="n">a</span> <span class="n">lab</span> <span class="ow">or</span> <span class="n">on</span> <span class="n">public</span> <span class="n">repositories</span><span class="o">.</span>
     <span class="n">A</span> <span class="o">-</span> <span class="n">Accessible</span><span class="p">:</span>
@@ -652,7 +654,8 @@ document.write(`
 <p>We’ll have a look at some real life implementations shortly using the public examples on the <a class="reference external" href="https://github.com/bids-standard/bids-examples/tree/master/ds000001-fmriprep">BIDS-Github Demo</a>!</p>
 <section id="dataset-description-json">
 <h3>dataset_description.json:<a class="headerlink" href="#dataset-description-json" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>      <span class="n">Purpose</span><span class="p">:</span> <span class="n">Acts</span> <span class="k">as</span> <span class="n">a</span> <span class="n">reference</span> <span class="n">document</span> <span class="k">for</span> <span class="n">dataset</span> <span class="n">context</span><span class="o">.</span> <span class="n">Facilitates</span> <span class="n">proper</span> <span class="n">citation</span> <span class="ow">and</span> <span class="n">acknowledgment</span><span class="o">.</span> <span class="n">A</span> <span class="n">structured</span> <span class="n">JSON</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">essential</span> <span class="n">metadata</span> <span class="n">to</span> <span class="n">identify</span> <span class="ow">and</span> <span class="n">describe</span> <span class="n">the</span> <span class="n">dataset</span><span class="o">.</span>
+<p><code class="docutils literal notranslate"><span class="pre">Purpose:</span></code> Acts as a reference document for dataset context. Facilitates proper citation and acknowledgment. A structured JSON file containing essential metadata to identify and describe the dataset.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
 
       <span class="n">Required</span> <span class="n">Fields</span><span class="p">:</span>
       <span class="n">Name</span><span class="p">:</span> <span class="n">The</span> <span class="n">title</span> <span class="ow">or</span> <span class="n">name</span> <span class="n">of</span> <span class="n">the</span> <span class="n">dataset</span><span class="o">.</span>
@@ -664,25 +667,69 @@ document.write(`
 
 </pre></div>
 </div>
+<p>Example file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="s2">&quot;Speech Rate Study&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BIDSVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;1.11.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DatasetType&quot;</span><span class="p">:</span> <span class="s2">&quot;raw&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Authors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Jane Doe&quot;</span><span class="p">,</span> <span class="s2">&quot;John Smith&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;License&quot;</span><span class="p">:</span> <span class="s2">&quot;CC0-BY&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Acknowledgements&quot;</span><span class="p">:</span> <span class="s2">&quot;Thanks to the lab team.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Funding&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Something Grant 12345&quot;</span><span class="p">]</span>
+
+
+</pre></div>
+</div>
 </section>
 <section id="participants-tsv">
 <h3>participants.tsv:<a class="headerlink" href="#participants-tsv" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="n">Purpose</span><span class="p">:</span> <span class="n">A</span> <span class="n">tab</span><span class="o">-</span><span class="n">separated</span> <span class="n">values</span> <span class="p">(</span><span class="n">TSV</span><span class="p">)</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">participant</span><span class="o">-</span><span class="n">level</span> <span class="n">information</span><span class="o">.</span> <span class="n">Provides</span> <span class="n">key</span> <span class="n">grouping</span> <span class="n">variables</span> <span class="k">for</span> <span class="n">analysis</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="p">,</span> <span class="n">age</span> <span class="n">groups</span> <span class="ow">or</span> <span class="n">experimental</span> <span class="n">conditions</span><span class="p">)</span><span class="o">.</span>
-
-        <span class="n">Required</span> <span class="n">Columns</span><span class="p">:</span>
+<p><code class="docutils literal notranslate"><span class="pre">Purpose:</span></code> A tab-separated values (TSV) file containing participant-level information. Provides key grouping variables for analysis (e.g., age groups or experimental conditions). I.e if your dataset includes multiple conditions, groups etc. you should provide this info in a structured form, so that people can easily comprehend what has been done and machines (processing workflows) can easily parse this information and enable easier analysis etc.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="n">Required</span> <span class="n">Columns</span><span class="p">:</span>
             <span class="n">participant_id</span><span class="p">:</span> <span class="n">Unique</span> <span class="n">identifier</span> <span class="k">for</span> <span class="n">each</span> <span class="n">participant</span><span class="o">.</span>
             <span class="n">Optional</span> <span class="n">but</span> <span class="n">recommended</span> <span class="n">fields</span> <span class="n">include</span> <span class="n">grouping</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="p">,</span> <span class="n">control</span> <span class="ow">or</span> <span class="n">experimental</span><span class="p">)</span> <span class="ow">and</span> <span class="n">demographic</span> <span class="n">information</span> <span class="n">like</span> <span class="n">age</span><span class="p">,</span> <span class="n">sex</span> <span class="n">etc</span><span class="o">.</span>
 
 </pre></div>
 </div>
+<p>Example file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="n">participant_id</span>	<span class="n">age</span>	<span class="n">sex</span>	<span class="n">group</span>	<span class="n">handedness</span>
+<span class="n">sub</span><span class="o">-</span><span class="mi">01</span>	<span class="mi">24</span>	<span class="n">F</span>	<span class="n">control</span>	<span class="n">right</span>
+<span class="n">sub</span><span class="o">-</span><span class="mi">02</span>	<span class="mi">31</span>	<span class="n">M</span>	<span class="n">patient</span>	<span class="n">right</span>
+<span class="n">sub</span><span class="o">-</span><span class="mi">03</span>	<span class="mi">28</span>	<span class="n">F</span>	<span class="n">patient</span>	<span class="n">left</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </section>
 <section id="sub-directories">
 <h3>sub-<label> directories:<a class="headerlink" href="#sub-directories" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        Purpose:  Ensures clarity and avoids ambiguity in data association, allowing the use of prewritten processing pipelines. Each participant’s data is stored in its own directory, named with their unique identifier (e.g., sub-001).
-
-        Structure:
-            Organized hierarchically to separate anatomical, functional, other modalities.
-           
+<p>Purpose:  Ensures clarity and avoids ambiguity in data association, allowing the use of prewritten processing pipelines. Each participant’s data is stored in its own directory, named with their unique identifier (e.g., sub-001). Organized hierarchically to separate anatomical, functional, other modalities.</p>
+</section>
+<section id="filename-anatomy">
+<h3>Filename anatomy<a class="headerlink" href="#filename-anatomy" title="Link to this heading">#</a></h3>
+<p>BIDS filenames are built from key-value pairs (called entities) joined by underscores, ending in a suffix that states the data type, then the extension:</p>
+<p><code class="docutils literal notranslate"><span class="pre">sub-&lt;label&gt;[_ses-&lt;label&gt;][_task-&lt;label&gt;][_run-&lt;index&gt;]_&lt;suffix&gt;.&lt;ext&gt;</span></code></p>
+<p>The entities in [brackets] are optional, but their order is fixed by the spec — you can’t reorder them. Every file starts with sub-<label>, and that label must match the folder name.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="o">/</span>
+    <span class="n">anat</span><span class="o">/</span>
+        <span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="n">_T1w</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>                          <span class="c1"># anatomical, T1-weighted</span>
+        <span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="n">_T2w</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+    <span class="n">func</span><span class="o">/</span>
+        <span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="n">_task</span><span class="o">-</span><span class="n">rest_bold</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>               <span class="c1"># functional run</span>
+        <span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="n">_task</span><span class="o">-</span><span class="n">rest_bold</span><span class="o">.</span><span class="n">json</span>                 <span class="c1"># sidecar with metadata</span>
+        <span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="n">_task</span><span class="o">-</span><span class="n">rest_events</span><span class="o">.</span><span class="n">tsv</span>                <span class="c1"># event timings</span>
+    <span class="n">dwi</span><span class="o">/</span>
+        <span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="n">_dwi</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>                          <span class="c1"># diffusion</span>
+        <span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="n">_dwi</span><span class="o">.</span><span class="n">bval</span>                            <span class="c1"># b-values</span>
+        <span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="n">_dwi</span><span class="o">.</span><span class="n">bvec</span>                            <span class="c1"># gradient directions</span>
+</pre></div>
+</div>
+<p>EEG example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="o">/</span>
+    <span class="n">eeg</span><span class="o">/</span>
+        <span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="n">_task</span><span class="o">-</span><span class="n">rest_eeg</span><span class="o">.</span><span class="n">edf</span>                   <span class="c1"># the recording (.edf/.bdf/.set/.vhdr...)</span>
+        <span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="n">_task</span><span class="o">-</span><span class="n">rest_eeg</span><span class="o">.</span><span class="n">json</span>                  <span class="c1"># sidecar with sampling rate etc.</span>
+        <span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="n">_task</span><span class="o">-</span><span class="n">rest_channels</span><span class="o">.</span><span class="n">tsv</span>              <span class="c1"># channel names, types, units</span>
+        <span class="n">sub</span><span class="o">-</span><span class="mi">01</span><span class="n">_task</span><span class="o">-</span><span class="n">rest_events</span><span class="o">.</span><span class="n">tsv</span>                <span class="c1"># event markers</span>
 </pre></div>
 </div>
 </section>
@@ -848,6 +895,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-description-json">dataset_description.json:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#participants-tsv">participants.tsv:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sub-directories">sub-<label> directories:</label></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filename-anatomy">Filename anatomy</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-vs-human-readable-files">Machine vs Human readable files</a></li>
