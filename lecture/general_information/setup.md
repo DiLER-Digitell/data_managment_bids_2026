@@ -1,4 +1,4 @@
-# Setup for the workshop
+# Setup for the Datalad workshop
 
 
 Most of the materials for this workshop can be found on this website, if you'd like to give input, leave comments or highlight relevant parts (publicly or privately) we encourage you to make use of the [`hypothes.is`](https://web.hypothes.is/) plugin via the annotation sidebar on the right side of the page. If you'd rather download these materials, you can do so via the {download} symbol! at the top of the respective page. You can open the respective content (.md files) via an IDE (e.g. VScode, Atom) or via Jupyter Notebooks/Lab.
