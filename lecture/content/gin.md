@@ -20,33 +20,24 @@ Neuroscience is one of the most interdisciplinary fields of research, encompassi
 
 Each discipline brings unique methodologies, data modalities, and storage needs. This diversity often leads to siloed practices, making collaboration and data reuse unnecisarrly difficult. 
 
-Compounding the issue is the variety of standards — when they exist— and the proprietary formats imposed by commercial tools. Let's be clear we can not simply rely on social contracts, i.e. self inforcement practices.
+Compounding the issue is the variety of standards, when and if they exist, and the proprietary formats imposed by commercial tools. Let's be clear: `we can not simply rely on social contracts, i.e. self inforcement practices`. I.e. social contracts, like the voluntary adoption of the BIDS standard, help align practices within labs or collaborations but fall short of addressing larger, systemic problems. 
 
-Social contracts, like the voluntary adoption of the BIDS standard, help align practices within labs or collaborations but fall short of addressing larger, systemic problems. 
+To bridge gaps between disciplines or even between labs using different conventions, we need robust technical solutions that embed reproducibility, accessibility, and scalability into data management workflows. For this `Datalad` is the tool of choice, which will be introduced at the bottom of this page. 
 
-To bridge gaps between disciplines or even between labs using different conventions, we need robust technical solutions that embed reproducibility, accessibility, and scalability into data management workflows.
-
-G-Node or the "German German Neuroinformatics Node (G-Node)" provides their own take on this issue:
+For brevity and to show how to host and store data efficiently and free of cost, we will instead introduce G-Node and some of the classic ways to push and maintain data.
 
 
 ## The G-Node Approach
 
-
-G-Node, or the German Neuroinformatics Node, addresses the systemic challenges in neuroscience data management by providing an ecosystem where data and tools are open, interoperable, and scalable, rather than proprietary, fragemented and dependence forming standards. 
-
-Their solutions are backed by support from:
-
-- The German Federal Ministry of Education and Research
-- Ludwig-Maximilians-Universität München
-- The International Neuroinformatics Coordination Facility (INCF)
+G-Node, or the German Neuroinformatics Node, aims to address the systemic challenges in neuroscience data management (cost, time and effort of data hosting) by providing an ecosystem where data and tools are open, interoperable and scalable.
 
 
 ## Motivation
-We care, beacuse they provide tools for:
+We care, beacuse they provide free tools for:
 - data access, data storage, and data analysis
 
 
-We'll be taking a look at one of their solutions, the G-Node Interface:
+We'll be taking a look at one of their solutions, the `G-Node Interface`:
 - G-Node Interface is a data hosting and sharing plattform, build on git and git-annex infrastructure. Meaning that version control and efficient data management are at the heart of the plattform.
 
 
@@ -89,30 +80,189 @@ Simply:
 
 ### Challenges
 While straightforward, this approach has some significant downsides:
-        Slow Upload Speeds: For larger datasets, the upload process can be painfully slow.
-        Limited Scalability: Working within the file size and number constraints quickly becomes cumbersome.
-        Data Provenance?
+- **Slow Upload Speeds:** For larger datasets, the upload process can be painfully slow.
+- **Limited Scalability:** Working within the file size and number constraints quickly becomes cumbersome.
+- **Data Provenance?** No automated tracking of where data came from or how it changed.
+
+---
+
+## GIN CLI
+The platform also provides tools for more advanced interaction, allowing for faster and automated data transfer. The GIN Command-Line Interface (GIN CLI) extends the platform's capabilities beyond the web interface. It allows users to efficiently manage repositories, sync data, and track changes using Git and Git-Annex under the hood.
+
+### Installation
+Download the GIN CLI for your OS from [https://gin.g-node.org/G-Node/Info/wiki/GIN+CLI+Usage+Tutorial](https://gin.g-node.org/G-Node/Info/wiki/GIN+CLI+Usage+Tutorial) and follow the setup instructions. Once installed, verify with:
+
+```bash
+gin --version
+```
+
+### Logging in
+Before doing anything else, authenticate with your GIN account:
+
+```bash
+gin login
+```
+
+You will be prompted for your GIN username and password. Your credentials are stored locally so you only need to do this once per machine.
+
+### Setting up a repository
+First create a repository on the GIN web interface (gin.g-node.org), then get a local copy:
+
+```bash
+# Download (clone) an existing repository to your machine
+gin get YourUsername/your-repo-name
+
+# Navigate into it
+cd your-repo-name
+```
+
+Or initialise a fresh local folder and link it to a new remote repository:
+
+```bash
+mkdir my-dataset && cd my-dataset
+gin init
+gin add-remote origin YourUsername/your-repo-name
+```
+
+### Recording and uploading changes
+The basic day-to-day workflow mirrors Git, with one extra step for large files:
+
+```bash
+# Stage all new and changed files (small files go via Git, large ones via Git-Annex)
+gin commit -m "Add raw recordings from session 2024-06-01"
+
+# Upload committed changes to the GIN server
+gin upload
+```
+
+To upload only a specific folder or file:
+
+```bash
+gin upload data/session_01/
+```
+
+### Downloading and syncing
+Pull the latest version from the remote repository:
+
+```bash
+gin download
+```
+
+For large annexed files, content is not downloaded automatically. Retrieve it explicitly:
+
+```bash
+# Download the actual content of all annexed files
+gin get-content .
+
+# Or just a specific subfolder
+gin get-content data/session_01/
+```
+
+### Checking repository status
+```bash
+# Show which files are modified, untracked, or not yet downloaded
+gin status
+```
+
+---
+
+## Git + Git-Annex (advanced)
+If you prefer working directly with Git and Git-Annex — or need to script complex workflows — you can bypass the GIN CLI entirely and use standard Git commands with the GIN remote.
+
+### One-time SSH key setup
+GIN supports SSH authentication, which avoids entering your password on every push or pull.
+
+```bash
+# Generate an SSH key pair (skip if you already have one)
+ssh-keygen -t ed25519 -C "your@email.com"
+
+# Print the public key and copy the output
+cat ~/.ssh/id_ed25519.pub
+```
+
+Paste the public key into your GIN account under **Settings → SSH Keys**.
+
+Test the connection:
+
+```bash
+ssh -T git@gin.g-node.org
+# Expected: Hi YourUsername! You've successfully authenticated...
+```
+
+### Cloning with SSH
+```bash
+git clone git@gin.g-node.org:YourUsername/your-repo-name.git
+cd your-repo-name
+
+# Initialise Git-Annex (required once per clone)
+git annex init "my-laptop"
+```
+
+### Adding and committing files
+```bash
+# Let Git-Annex manage large files (replaces the file with a pointer)
+git annex add data/
+
+# Commit the pointers and any small files tracked by Git
+git commit -m "Add session data"
+
+# Push Git history to GIN
+git push origin main
+
+# Push the large file content to GIN via Git-Annex
+git annex copy --to origin
+```
+
+### Pulling updates
+```bash
+# Fetch Git history and annex metadata
+git pull
+
+# Download the actual content of annexed files
+git annex get .
+```
+
+### Checking annex status
+```bash
+# See which files have their content locally and which are remote-only
+git annex status
+
+# Verify file integrity
+git annex fsck
+```
+
+---
+
+## Approaches at a glance
+
+| Feature | Web interface | GIN CLI | Git + Git-Annex |
+|---|---|---|---|
+| Setup effort | Minimal | Low | Medium |
+| Upload speed | Slow | Fast | Fast |
+| Automation / scripting | No | Partial | Full |
+| Fine-grained Git control | No | No | Yes |
+| Recommended for | Quick sharing | Most research workflows | Power users |
 
 
-### GIN Cli
 
-The platform also provides tools for more advanced interaction, allowing for faster and automated data-transfer. The Gin Command-Line Interface (GIN CLI):
-    The GIN CLI extends the platform’s capabilities beyond the web interface. It allows users to efficiently manage repositories, sync data, and track changes using Git and Git-Annex under the hood. You'll find a simple tutorial here: https://gin.g-node.org/G-Node/Info/wiki/GIN+CLI+Usage+Tutorial
+    
+## Alternatives: OpenNeuro
 
-In essence it's a very simple approach:
-- create a GIN repository via the web-client and a local mirror
-- initalize your local repository
-- add data to your local repository 
-- upload your data to the associated repository via the CLI using the command:
-    `gin upload --options`
 
+An alternate solution that is very common  of datasets is [OpenNeuro](https://openneuro.org/). 
+
+OpenNeuro is an repository solution to host and share BIDS-compatible datasets, ensuring both accessibility and compliance with community standards. It is designed with the idea of data indexing and searching in mind therefore, but it doesn't provide the option of non-public datasets.
+
+It is therfore particularly valuable for researchers looking to share data broadly with the community. It ensures reproducibility by providing an accessible, long-term data repository, implementing automatic BIDS Validation, but lacks the version control system unerlying GIN.
+
+Find more info in the [Datalad aHandbook section on OpenNeuro](https://handbook.datalad.org/en/latest/usecases/openneuro.html)
 
 
 ## DataLad
 
-In life, some things are required by funding agencies, some are nice to have, and then there are those things that, once discovered, make your life (and neuroscience) significantly better. You could say this about data sharing in general, but DataLad exemplifies this perfectly.
+In life, some things are required by funding agencies, some are nice to have, and then there are those things that, once discovered, make your life (and neuroscience) significantly better. DataLad exemplifies this perfectly.
 
-One efficient and reproducible way to work across multiple platforms is through the DataLad library. It focuses on true data provenance by providing an interface to integrate data repositories, local version control, and automatic metadata creation on the fly, e.g. 
+DataLad focuses on true data provenance by providing an interface to integrate data repositories, local version control, and automatic metadata creation/maintenance, e.g. 
 
     - Recording the origin of datasets, including where and when they were created or obtained
     - Tracking transformations, such as scripts applied, parameters used, and the sequence of analysis steps
@@ -126,7 +276,7 @@ Data provenance refers to the comprehensive documentation of the origins, transf
 
 ```
 
-Building on this idea, DataLad is best suited for keeping track of data, facilitating sharing, and introducing reproducibility to workflows. For instance, it ensures that associated scripts, data transformations, and workflows are easy to track and re-run—particularly useful for preprocessing tasks (ever tried doing that for someone else’s dataset?).
+Building on the Idea of having a dedicated tool to integrate provenance into data managment workflows, it allows for keeping track of data, facilitats sharing by providing documentation and common commands. It ensures that associated scripts, data transformations, and workflows are easy to track and re-run—particularly useful for preprocessing tasks.
 
 The main `features`:
 - command-line tool build on Python
@@ -982,17 +1132,6 @@ DataLad provides a robust framework for managing published datasets by enabling 
 
 [Quick course; Running and publishing Data using Datalad](https://handbook.datalad.org/en/latest/code_from_chapters/yale.html)
 
-    
-## OpenNeuro
-
-
-An alternate solution that is very common  of datasets is [OpenNeuro](https://openneuro.org/). 
-
-OpenNeuro is an repository solution to host and share BIDS-compatible datasets, ensuring both accessibility and compliance with community standards. It is designed with the idea of data indexing and searching in mind therefore, but it doesn't provide the option of non-public datasets.
-
-It is therfore particularly valuable for researchers looking to share data broadly with the community. It ensures reproducibility by providing an accessible, long-term data repository, implementing automatic BIDS Validation, but lacks the version control system unerlying GIN.
-
-Find more info in the [Datalad aHandbook section on OpenNeuro](https://handbook.datalad.org/en/latest/usecases/openneuro.html)
 
 ## Sources
 
