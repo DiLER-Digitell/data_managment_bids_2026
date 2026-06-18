@@ -438,14 +438,8 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-repository-status">Checking repository status</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-git-annex-advanced">Git + Git-Annex (advanced)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-time-ssh-key-setup">One-time SSH key setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cloning-with-ssh">Cloning with SSH</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-and-committing-files">Adding and committing files</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pulling-updates">Pulling updates</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-annex-status">Checking annex status</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-time-ssh-key-setup">One-time SSH key setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-git-git-annex-workflow">Direct Git + Git-Annex workflow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approaches-at-a-glance">Approaches at a glance</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternatives-openneuro">Alternatives: OpenNeuro</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datalad">DataLad</a></li>
@@ -638,22 +632,22 @@ gin<span class="w"> </span>get<span class="w"> </span>YourUsername/your-repo-nam
 <p>Or initialise a fresh local folder and link it to a new remote repository:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>my-dataset<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>my-dataset
 gin<span class="w"> </span>init
-gin<span class="w"> </span>add-remote<span class="w"> </span>origin<span class="w"> </span>YourUsername/your-repo-name
+gin<span class="w"> </span>add-remote<span class="w"> </span>--create<span class="w"> </span>origin<span class="w"> </span>gin:Username/dataset_name
 </pre></div>
 </div>
 </section>
 <section id="recording-and-uploading-changes">
 <h3>Recording and uploading changes<a class="headerlink" href="#recording-and-uploading-changes" title="Link to this heading">#</a></h3>
-<p>The basic day-to-day workflow mirrors Git, with one extra step for large files:</p>
+<p>The basic day-to-day workflow mirrors Git, with one extra step for large files that we will explore later on:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stage all new and changed files (small files go via Git, large ones via Git-Annex)</span>
 gin<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add raw recordings from session 2024-06-01&quot;</span>
 
 <span class="c1"># Upload committed changes to the GIN server</span>
-gin<span class="w"> </span>upload
+gin<span class="w"> </span>upload<span class="w"> </span>.
 </pre></div>
 </div>
 <p>To upload only a specific folder or file:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gin<span class="w"> </span>upload<span class="w"> </span>data/session_01/
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gin<span class="w"> </span>upload<span class="w"> </span>test/data/session_01/
 </pre></div>
 </div>
 </section>
@@ -681,16 +675,16 @@ gin<span class="w"> </span>status
 </section>
 </section>
 <hr class="docutils" />
-<section id="git-git-annex-advanced">
-<h2>Git + Git-Annex (advanced)<a class="headerlink" href="#git-git-annex-advanced" title="Link to this heading">#</a></h2>
-<p>If you prefer working directly with Git and Git-Annex — or need to script complex workflows — you can bypass the GIN CLI entirely and use standard Git commands with the GIN remote.</p>
 <section id="one-time-ssh-key-setup">
-<h3>One-time SSH key setup<a class="headerlink" href="#one-time-ssh-key-setup" title="Link to this heading">#</a></h3>
-<p>GIN supports SSH authentication, which avoids entering your password on every push or pull.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate an SSH key pair (skip if you already have one)</span>
+<h2>One-time SSH key setup<a class="headerlink" href="#one-time-ssh-key-setup" title="Link to this heading">#</a></h2>
+<p>SSH authentication lets you push and pull without entering your password each time. This is a one-time setup per machine (per GIN account), not something you repeat for each dataset.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check for an existing key first</span>
+ls<span class="w"> </span>-la<span class="w"> </span>~/.ssh/*.pub
+
+<span class="c1"># Only if you have none, generate one (press Enter to accept the default path)</span>
 ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w"> </span>-C<span class="w"> </span><span class="s2">&quot;your@email.com&quot;</span>
 
-<span class="c1"># Print the public key and copy the output</span>
+<span class="c1"># Print whichever public key you want to use, and copy the output</span>
 cat<span class="w"> </span>~/.ssh/id_ed25519.pub
 </pre></div>
 </div>
@@ -698,55 +692,38 @@ cat<span class="w"> </span>~/.ssh/id_ed25519.pub
 <p>Test the connection:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>-T<span class="w"> </span>git@gin.g-node.org
 <span class="c1"># Expected: Hi YourUsername! You&#39;ve successfully authenticated...</span>
+<span class="c1"># (the &quot;GIN does not provide shell access&quot; notice is normal)</span>
 </pre></div>
 </div>
 </section>
-<section id="cloning-with-ssh">
-<h3>Cloning with SSH<a class="headerlink" href="#cloning-with-ssh" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@gin.g-node.org:YourUsername/your-repo-name.git
-<span class="nb">cd</span><span class="w"> </span>your-repo-name
+<section id="direct-git-git-annex-workflow">
+<h2>Direct Git + Git-Annex workflow<a class="headerlink" href="#direct-git-git-annex-workflow" title="Link to this heading">#</a></h2>
+<p>Prerequisite: the repository must already exist on the GIN server. Create it once with <code class="docutils literal notranslate"><span class="pre">gin</span> <span class="pre">create</span> <span class="pre">your-repo-name</span></code> or via the “+” on <a class="reference external" href="http://gin.g-node.org">gin.g-node.org</a> — raw Git cannot create it for you.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialise the local repository and git-annex</span>
+git<span class="w"> </span>init
+git<span class="w"> </span>annex<span class="w"> </span>init<span class="w"> </span><span class="s2">&quot;my-dataset&quot;</span>
 
-<span class="c1"># Initialise Git-Annex (required once per clone)</span>
-git<span class="w"> </span>annex<span class="w"> </span>init<span class="w"> </span><span class="s2">&quot;my-laptop&quot;</span>
-</pre></div>
-</div>
-</section>
-<section id="adding-and-committing-files">
-<h3>Adding and committing files<a class="headerlink" href="#adding-and-committing-files" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let Git-Annex manage large files (replaces the file with a pointer)</span>
+<span class="c1"># Annex the large data files, stage the small ones in plain Git</span>
 git<span class="w"> </span>annex<span class="w"> </span>add<span class="w"> </span>data/
+git<span class="w"> </span>add<span class="w"> </span>.
 
-<span class="c1"># Commit the pointers and any small files tracked by Git</span>
+<span class="c1"># Record the commit</span>
 git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add session data&quot;</span>
 
-<span class="c1"># Push Git history to GIN</span>
+<span class="c1"># Point at the GIN repo (already created on the server) and push</span>
+git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>git@gin.g-node.org:YourUsername/your-repo-name.git
 git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main
 
-<span class="c1"># Push the large file content to GIN via Git-Annex</span>
-git<span class="w"> </span>annex<span class="w"> </span>copy<span class="w"> </span>--to<span class="w"> </span>origin
-</pre></div>
-</div>
-</section>
-<section id="pulling-updates">
-<h3>Pulling updates<a class="headerlink" href="#pulling-updates" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fetch Git history and annex metadata</span>
-git<span class="w"> </span>pull
+<span class="c1"># Push the annexed file content and sync metadata</span>
+git<span class="w"> </span>annex<span class="w"> </span>sync<span class="w"> </span>--content
 
-<span class="c1"># Download the actual content of annexed files</span>
-git<span class="w"> </span>annex<span class="w"> </span>get<span class="w"> </span>.
-</pre></div>
-</div>
-</section>
-<section id="checking-annex-status">
-<h3>Checking annex status<a class="headerlink" href="#checking-annex-status" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># See which files have their content locally and which are remote-only</span>
+<span class="c1"># See which files have their content locally and which are remote-only</span>
 git<span class="w"> </span>annex<span class="w"> </span>status
 
 <span class="c1"># Verify file integrity</span>
 git<span class="w"> </span>annex<span class="w"> </span>fsck
 </pre></div>
 </div>
-</section>
 </section>
 <hr class="docutils" />
 <section id="approaches-at-a-glance">
@@ -1653,14 +1630,8 @@ ds000003-qc $ datalad containers-run \
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-repository-status">Checking repository status</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-git-annex-advanced">Git + Git-Annex (advanced)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-time-ssh-key-setup">One-time SSH key setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cloning-with-ssh">Cloning with SSH</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-and-committing-files">Adding and committing files</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pulling-updates">Pulling updates</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-annex-status">Checking annex status</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-time-ssh-key-setup">One-time SSH key setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-git-git-annex-workflow">Direct Git + Git-Annex workflow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approaches-at-a-glance">Approaches at a glance</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternatives-openneuro">Alternatives: OpenNeuro</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datalad">DataLad</a></li>
