@@ -230,7 +230,7 @@ git annex fsck
 | Upload speed | Slow | Fast | Fast |
 | Automation / scripting | No | Partial | Full |
 | Fine-grained Git control | No | No | Yes |
-| Recommended for | Quick sharing | Most research workflows | Power users |
+| Recommended for | Quick sharing | Most research workflows | Full control/Large datasets |
 
 
 
@@ -238,7 +238,7 @@ git annex fsck
 ## Alternatives: OpenNeuro
 
 
-An alternate solution that is very common  of datasets is [OpenNeuro](https://openneuro.org/). 
+An alternate option that is very common  for large datasets is [OpenNeuro](https://openneuro.org/). 
 
 OpenNeuro is an repository solution to host and share BIDS-compatible datasets, ensuring both accessibility and compliance with community standards. It is designed with the idea of data indexing and searching in mind therefore, but it doesn't provide the option of non-public datasets.
 
