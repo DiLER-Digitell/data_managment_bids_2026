@@ -184,10 +184,6 @@
 <li class="toctree-l1"><a class="reference internal" href="bids_specs.html">Main Course: BIDS (Brain Imaging Data Structure)</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Main Course: G-Node/GIN</a></li>
 
-
-
-
-
 <li class="toctree-l1"><a class="reference internal" href="../introduction/intro.html">Extra content: Data Management &amp; Datalad</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../general_information/setup.html">Setup for the Datalad workshop</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../general_information/prerequisites.html">Course prerequisites</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -442,13 +438,16 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-time-ssh-key-setup">One-time SSH key setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-git-git-annex-workflow">Direct Git + Git-Annex workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-git-git-annex-workflow">Direct Git + Git-Annex workflow</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uploading-data-via-git-git-annex">Uploading data via Git/Git-Annex</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#push-the-annexed-file-content-and-sync-metadata">Push the annexed file content and sync metadata</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#see-which-files-have-their-content-locally-and-which-are-remote-only">See which files have their content locally and which are remote-only</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-file-integrity">Verify file integrity</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#uploading-data-via-git-git-annex">Uploading data via Git/Git-Annex</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#push-the-annexed-file-content-and-sync-metadata">Push the annexed file content and sync metadata</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#see-which-files-have-their-content-locally-and-which-are-remote-only">See which files have their content locally and which are remote-only</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-file-integrity">Verify file integrity</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approaches-at-a-glance">Approaches at a glance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternatives-openneuro">Alternatives: OpenNeuro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datalad">DataLad</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-how-to-get-started">Usage/How to get started:</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-directory">1. create a directory</a></li>
@@ -724,70 +723,93 @@ git<span class="w"> </span>add<span class="w"> </span>.
 git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add session data&quot;</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="uploading-data-via-git-git-annex">
-<h1>Uploading data via Git/Git-Annex<a class="headerlink" href="#uploading-data-via-git-git-annex" title="Link to this heading">#</a></h1>
-<p>Let’s point at the GIN repo (we already created on the server, otherwise do so now) and push:
-git remote add origin <a class="reference external" href="mailto:git&#37;&#52;&#48;gin&#46;g-node&#46;org">git<span>&#64;</span>gin<span>&#46;</span>g-node<span>&#46;</span>org</a>:YourUsername/your-repo-name.git
-git push origin main</p>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="push-the-annexed-file-content-and-sync-metadata">
-<h1>Push the annexed file content and sync metadata<a class="headerlink" href="#push-the-annexed-file-content-and-sync-metadata" title="Link to this heading">#</a></h1>
-<p>git annex sync –content</p>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="see-which-files-have-their-content-locally-and-which-are-remote-only">
-<h1>See which files have their content locally and which are remote-only<a class="headerlink" href="#see-which-files-have-their-content-locally-and-which-are-remote-only" title="Link to this heading">#</a></h1>
-<p>git annex status</p>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="verify-file-integrity">
-<h1>Verify file integrity<a class="headerlink" href="#verify-file-integrity" title="Link to this heading">#</a></h1>
-<p>git annex fsck</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
----
-
-## Approaches at a glance
-
-| Feature | Web interface | GIN CLI | Git + Git-Annex |
-|---|---|---|---|
-| Setup effort | Minimal | Low | Medium |
-| Upload speed | Slow | Fast | Fast |
-| Automation / scripting | No | Partial | Full |
-| Fine-grained Git control | No | No | Yes |
-| Recommended for | Quick sharing | Most research workflows | Full control/Large datasets |
-
-
-
-    
-## Alternatives: OpenNeuro
-
-
-An alternate option that is very common  for large datasets is [OpenNeuro](https://openneuro.org/). 
-
-OpenNeuro is an repository solution to host and share BIDS-compatible datasets, ensuring both accessibility and compliance with community standards. It is designed with the idea of data indexing and searching in mind therefore, but it doesn&#39;t provide the option of non-public datasets.
-
-It is therfore particularly valuable for researchers looking to share data broadly with the community. It ensures reproducibility by providing an accessible, long-term data repository, implementing automatic BIDS Validation, but lacks the version control system unerlying GIN.
-
-Find more info in the [Datalad aHandbook section on OpenNeuro](https://handbook.datalad.org/en/latest/usecases/openneuro.html)
-
-
-## DataLad
-
-In life, some things are required by funding agencies, some are nice to have, and then there are those things that, once discovered, make your life (and neuroscience) significantly better. DataLad exemplifies this perfectly.
-
-DataLad focuses on true data provenance by providing an interface to integrate data repositories, local version control, and automatic metadata creation/maintenance, e.g. 
-
-    - Recording the origin of datasets, including where and when they were created or obtained
-    - Tracking transformations, such as scripts applied, parameters used, and the sequence of analysis steps
-    - Storing and adding to metadata that identifies contributors and captures the context of data modifications
-
-
-
-```{admonition} Question: WTF is Data Provenance?  
-:class: dropdown  
-Data provenance refers to the comprehensive documentation of the origins, transformations, and journey of data throughout its lifecycle. It ensures that every step in data processing is transparently recorded, enabling both researchers and external parties to verify and reproduce results.
-
+<section id="uploading-data-via-git-git-annex">
+<h3>Uploading data via Git/Git-Annex<a class="headerlink" href="#uploading-data-via-git-git-annex" title="Link to this heading">#</a></h3>
+<p>Let’s point at the GIN repo (we already created on the server, otherwise do so now) and push:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">origin</span> <span class="n">git</span><span class="nd">@gin</span><span class="o">.</span><span class="n">g</span><span class="o">-</span><span class="n">node</span><span class="o">.</span><span class="n">org</span><span class="p">:</span><span class="n">YourUsername</span><span class="o">/</span><span class="n">your</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="n">name</span><span class="o">.</span><span class="n">git</span>
+<span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">main</span>
 </pre></div>
+</div>
+</section>
+<section id="push-the-annexed-file-content-and-sync-metadata">
+<h3>Push the annexed file content and sync metadata<a class="headerlink" href="#push-the-annexed-file-content-and-sync-metadata" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">annex</span> <span class="n">sync</span> <span class="o">--</span><span class="n">content</span>
+</pre></div>
+</div>
+</section>
+<section id="see-which-files-have-their-content-locally-and-which-are-remote-only">
+<h3>See which files have their content locally and which are remote-only<a class="headerlink" href="#see-which-files-have-their-content-locally-and-which-are-remote-only" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">annex</span> <span class="n">status</span>
+</pre></div>
+</div>
+</section>
+<section id="verify-file-integrity">
+<h3>Verify file integrity<a class="headerlink" href="#verify-file-integrity" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">annex</span> <span class="n">fsck</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="approaches-at-a-glance">
+<h2>Approaches at a glance<a class="headerlink" href="#approaches-at-a-glance" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Web interface</p></th>
+<th class="head"><p>GIN CLI</p></th>
+<th class="head"><p>Git + Git-Annex</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Setup effort</p></td>
+<td><p>Minimal</p></td>
+<td><p>Low</p></td>
+<td><p>Medium</p></td>
+</tr>
+<tr class="row-odd"><td><p>Upload speed</p></td>
+<td><p>Slow</p></td>
+<td><p>Fast</p></td>
+<td><p>Fast</p></td>
+</tr>
+<tr class="row-even"><td><p>Automation / scripting</p></td>
+<td><p>No</p></td>
+<td><p>Partial</p></td>
+<td><p>Full</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fine-grained Git control</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Recommended for</p></td>
+<td><p>Quick sharing</p></td>
+<td><p>Most research workflows</p></td>
+<td><p>Full control/Large datasets</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="alternatives-openneuro">
+<h2>Alternatives: OpenNeuro<a class="headerlink" href="#alternatives-openneuro" title="Link to this heading">#</a></h2>
+<p>An alternate option that is very common  for large datasets is <a class="reference external" href="https://openneuro.org/">OpenNeuro</a>.</p>
+<p>OpenNeuro is an repository solution to host and share BIDS-compatible datasets, ensuring both accessibility and compliance with community standards. It is designed with the idea of data indexing and searching in mind therefore, but it doesn’t provide the option of non-public datasets.</p>
+<p>It is therfore particularly valuable for researchers looking to share data broadly with the community. It ensures reproducibility by providing an accessible, long-term data repository, implementing automatic BIDS Validation, but lacks the version control system unerlying GIN.</p>
+<p>Find more info in the <a class="reference external" href="https://handbook.datalad.org/en/latest/usecases/openneuro.html">Datalad aHandbook section on OpenNeuro</a></p>
+</section>
+<section id="datalad">
+<h2>DataLad<a class="headerlink" href="#datalad" title="Link to this heading">#</a></h2>
+<p>In life, some things are required by funding agencies, some are nice to have, and then there are those things that, once discovered, make your life (and neuroscience) significantly better. DataLad exemplifies this perfectly.</p>
+<p>DataLad focuses on true data provenance by providing an interface to integrate data repositories, local version control, and automatic metadata creation/maintenance, e.g.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- Recording the origin of datasets, including where and when they were created or obtained
+- Tracking transformations, such as scripts applied, parameters used, and the sequence of analysis steps
+- Storing and adding to metadata that identifies contributors and captures the context of data modifications
+</pre></div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Question: WTF is Data Provenance?</p>
+<p>Data provenance refers to the comprehensive documentation of the origins, transformations, and journey of data throughout its lifecycle. It ensures that every step in data processing is transparently recorded, enabling both researchers and external parties to verify and reproduce results.</p>
 </div>
 <p>Building on the Idea of having a dedicated tool to integrate provenance into data managment workflows, it allows for keeping track of data, facilitats sharing by providing documentation and common commands. It ensures that associated scripts, data transformations, and workflows are easy to track and re-run—particularly useful for preprocessing tasks.</p>
 <p>The main <code class="docutils literal notranslate"><span class="pre">features</span></code>:</p>
@@ -828,6 +850,7 @@ Create separate projects for different analyses to avoid conflation.
 </pre></div>
 </div>
 </div>
+</section>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>Before we get started, we will need a few things to seamlessly manage our data. We need:</p>
@@ -1633,13 +1656,16 @@ ds000003-qc $ datalad containers-run \
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-time-ssh-key-setup">One-time SSH key setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-git-git-annex-workflow">Direct Git + Git-Annex workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-git-git-annex-workflow">Direct Git + Git-Annex workflow</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uploading-data-via-git-git-annex">Uploading data via Git/Git-Annex</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#push-the-annexed-file-content-and-sync-metadata">Push the annexed file content and sync metadata</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#see-which-files-have-their-content-locally-and-which-are-remote-only">See which files have their content locally and which are remote-only</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-file-integrity">Verify file integrity</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#uploading-data-via-git-git-annex">Uploading data via Git/Git-Annex</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#push-the-annexed-file-content-and-sync-metadata">Push the annexed file content and sync metadata</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#see-which-files-have-their-content-locally-and-which-are-remote-only">See which files have their content locally and which are remote-only</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-file-integrity">Verify file integrity</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approaches-at-a-glance">Approaches at a glance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternatives-openneuro">Alternatives: OpenNeuro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datalad">DataLad</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-how-to-get-started">Usage/How to get started:</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-directory">1. create a directory</a></li>
