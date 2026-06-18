@@ -216,19 +216,26 @@ git add .
 git commit -m "Add session data"
 
 ```
-# Uploading data via Git/Git-Annex
+### Uploading data via Git/Git-Annex
 
 Let's point at the GIN repo (we already created on the server, otherwise do so now) and push:
+```
 git remote add origin git@gin.g-node.org:YourUsername/your-repo-name.git
 git push origin main
+```
 
-# Push the annexed file content and sync metadata
+### Push the annexed file content and sync metadata
+```
 git annex sync --content
+```
 
-# See which files have their content locally and which are remote-only
+### See which files have their content locally and which are remote-only
+```
 git annex status
+```
 
-# Verify file integrity
+### Verify file integrity
+```
 git annex fsck
 ```
 
