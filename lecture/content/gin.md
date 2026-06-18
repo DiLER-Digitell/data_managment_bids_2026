@@ -129,6 +129,7 @@ The basic day-to-day workflow mirrors Git, with one extra step for large files t
 
 ```bash
 # Stage all new and changed files (small files go via Git, large ones via Git-Annex)
+git add .
 gin commit -m "Add raw recordings from session 2024-06-01"
 
 # Upload committed changes to the GIN server
