@@ -427,9 +427,27 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-and-upload-files">2. Add and Upload Files:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#make-it-public-share">3. Make it public/Share</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges">Challenges</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gin-cli">GIN Cli</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gin-cli">GIN CLI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-in">Logging in</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-a-repository">Setting up a repository</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recording-and-uploading-changes">Recording and uploading changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-and-syncing">Downloading and syncing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-repository-status">Checking repository status</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-git-annex-advanced">Git + Git-Annex (advanced)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-time-ssh-key-setup">One-time SSH key setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cloning-with-ssh">Cloning with SSH</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-and-committing-files">Adding and committing files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pulling-updates">Pulling updates</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-annex-status">Checking annex status</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approaches-at-a-glance">Approaches at a glance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternatives-openneuro">Alternatives: OpenNeuro</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datalad">DataLad</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-how-to-get-started">Usage/How to get started:</a><ul class="nav section-nav flex-column">
@@ -486,7 +504,6 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-using-published-datasets">Summary - Using published datasets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additinal-information-tutorials">Additinal Information/Tutorials</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openneuro">OpenNeuro</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Sources</a></li>
 </ul>
 </li>
@@ -520,28 +537,21 @@ Halchenko et al., (2021). DataLad: distributed system for joint management of co
 <p>Neuroscience is one of the most interdisciplinary fields of research, encompassing various domains</p>
 <p>— cognitive science, neuroimaging, electrophysiology, computational modeling, and more.</p>
 <p>Each discipline brings unique methodologies, data modalities, and storage needs. This diversity often leads to siloed practices, making collaboration and data reuse unnecisarrly difficult.</p>
-<p>Compounding the issue is the variety of standards — when they exist— and the proprietary formats imposed by commercial tools. Let’s be clear we can not simply rely on social contracts, i.e. self inforcement practices.</p>
-<p>Social contracts, like the voluntary adoption of the BIDS standard, help align practices within labs or collaborations but fall short of addressing larger, systemic problems.</p>
-<p>To bridge gaps between disciplines or even between labs using different conventions, we need robust technical solutions that embed reproducibility, accessibility, and scalability into data management workflows.</p>
-<p>G-Node or the “German German Neuroinformatics Node (G-Node)” provides their own take on this issue:</p>
+<p>Compounding the issue is the variety of standards, when and if they exist, and the proprietary formats imposed by commercial tools. Let’s be clear: <code class="docutils literal notranslate"><span class="pre">we</span> <span class="pre">can</span> <span class="pre">not</span> <span class="pre">simply</span> <span class="pre">rely</span> <span class="pre">on</span> <span class="pre">social</span> <span class="pre">contracts,</span> <span class="pre">i.e.</span> <span class="pre">self</span> <span class="pre">inforcement</span> <span class="pre">practices</span></code>. I.e. social contracts, like the voluntary adoption of the BIDS standard, help align practices within labs or collaborations but fall short of addressing larger, systemic problems.</p>
+<p>To bridge gaps between disciplines or even between labs using different conventions, we need robust technical solutions that embed reproducibility, accessibility, and scalability into data management workflows. For this <code class="docutils literal notranslate"><span class="pre">Datalad</span></code> is the tool of choice, which will be introduced at the bottom of this page.</p>
+<p>For brevity and to show how to host and store data efficiently and free of cost, we will instead introduce G-Node and some of the classic ways to push and maintain data.</p>
 </section>
 <section id="the-g-node-approach">
 <h2>The G-Node Approach<a class="headerlink" href="#the-g-node-approach" title="Link to this heading">#</a></h2>
-<p>G-Node, or the German Neuroinformatics Node, addresses the systemic challenges in neuroscience data management by providing an ecosystem where data and tools are open, interoperable, and scalable, rather than proprietary, fragemented and dependence forming standards.</p>
-<p>Their solutions are backed by support from:</p>
-<ul class="simple">
-<li><p>The German Federal Ministry of Education and Research</p></li>
-<li><p>Ludwig-Maximilians-Universität München</p></li>
-<li><p>The International Neuroinformatics Coordination Facility (INCF)</p></li>
-</ul>
+<p>G-Node, or the German Neuroinformatics Node, aims to address the systemic challenges in neuroscience data management (cost, time and effort of data hosting) by providing an ecosystem where data and tools are open, interoperable and scalable.</p>
 </section>
 <section id="motivation">
 <h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
-<p>We care, beacuse they provide tools for:</p>
+<p>We care, beacuse they provide free tools for:</p>
 <ul class="simple">
 <li><p>data access, data storage, and data analysis</p></li>
 </ul>
-<p>We’ll be taking a look at one of their solutions, the G-Node Interface:</p>
+<p>We’ll be taking a look at one of their solutions, the <code class="docutils literal notranslate"><span class="pre">G-Node</span> <span class="pre">Interface</span></code>:</p>
 <ul class="simple">
 <li><p>G-Node Interface is a data hosting and sharing plattform, build on git and git-annex infrastructure. Meaning that version control and efficient data management are at the heart of the plattform.</p></li>
 </ul>
@@ -588,29 +598,208 @@ Halchenko et al., (2021). DataLad: distributed system for joint management of co
 </section>
 <section id="challenges">
 <h3>Challenges<a class="headerlink" href="#challenges" title="Link to this heading">#</a></h3>
-<p>While straightforward, this approach has some significant downsides:
-Slow Upload Speeds: For larger datasets, the upload process can be painfully slow.
-Limited Scalability: Working within the file size and number constraints quickly becomes cumbersome.
-Data Provenance?</p>
-</section>
-<section id="gin-cli">
-<h3>GIN Cli<a class="headerlink" href="#gin-cli" title="Link to this heading">#</a></h3>
-<p>The platform also provides tools for more advanced interaction, allowing for faster and automated data-transfer. The Gin Command-Line Interface (GIN CLI):
-The GIN CLI extends the platform’s capabilities beyond the web interface. It allows users to efficiently manage repositories, sync data, and track changes using Git and Git-Annex under the hood. You’ll find a simple tutorial here: <a class="reference external" href="https://gin.g-node.org/G-Node/Info/wiki/GIN+CLI+Usage+Tutorial">https://gin.g-node.org/G-Node/Info/wiki/GIN+CLI+Usage+Tutorial</a></p>
-<p>In essence it’s a very simple approach:</p>
+<p>While straightforward, this approach has some significant downsides:</p>
 <ul class="simple">
-<li><p>create a GIN repository via the web-client and a local mirror</p></li>
-<li><p>initalize your local repository</p></li>
-<li><p>add data to your local repository</p></li>
-<li><p>upload your data to the associated repository via the CLI using the command:
-<code class="docutils literal notranslate"><span class="pre">gin</span> <span class="pre">upload</span> <span class="pre">--options</span></code></p></li>
+<li><p><strong>Slow Upload Speeds:</strong> For larger datasets, the upload process can be painfully slow.</p></li>
+<li><p><strong>Limited Scalability:</strong> Working within the file size and number constraints quickly becomes cumbersome.</p></li>
+<li><p><strong>Data Provenance?</strong> No automated tracking of where data came from or how it changed.</p></li>
 </ul>
 </section>
 </section>
+<hr class="docutils" />
+<section id="gin-cli">
+<h2>GIN CLI<a class="headerlink" href="#gin-cli" title="Link to this heading">#</a></h2>
+<p>The platform also provides tools for more advanced interaction, allowing for faster and automated data transfer. The GIN Command-Line Interface (GIN CLI) extends the platform’s capabilities beyond the web interface. It allows users to efficiently manage repositories, sync data, and track changes using Git and Git-Annex under the hood.</p>
+<section id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h3>
+<p>Download the GIN CLI for your OS from <a class="reference external" href="https://gin.g-node.org/G-Node/Info/wiki/GIN+CLI+Usage+Tutorial">https://gin.g-node.org/G-Node/Info/wiki/GIN+CLI+Usage+Tutorial</a> and follow the setup instructions. Once installed, verify with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gin<span class="w"> </span>--version
+</pre></div>
+</div>
+</section>
+<section id="logging-in">
+<h3>Logging in<a class="headerlink" href="#logging-in" title="Link to this heading">#</a></h3>
+<p>Before doing anything else, authenticate with your GIN account:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gin<span class="w"> </span>login
+</pre></div>
+</div>
+<p>You will be prompted for your GIN username and password. Your credentials are stored locally so you only need to do this once per machine.</p>
+</section>
+<section id="setting-up-a-repository">
+<h3>Setting up a repository<a class="headerlink" href="#setting-up-a-repository" title="Link to this heading">#</a></h3>
+<p>First create a repository on the GIN web interface (<a class="reference external" href="http://gin.g-node.org">gin.g-node.org</a>), then get a local copy:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download (clone) an existing repository to your machine</span>
+gin<span class="w"> </span>get<span class="w"> </span>YourUsername/your-repo-name
+
+<span class="c1"># Navigate into it</span>
+<span class="nb">cd</span><span class="w"> </span>your-repo-name
+</pre></div>
+</div>
+<p>Or initialise a fresh local folder and link it to a new remote repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>my-dataset<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>my-dataset
+gin<span class="w"> </span>init
+gin<span class="w"> </span>add-remote<span class="w"> </span>origin<span class="w"> </span>YourUsername/your-repo-name
+</pre></div>
+</div>
+</section>
+<section id="recording-and-uploading-changes">
+<h3>Recording and uploading changes<a class="headerlink" href="#recording-and-uploading-changes" title="Link to this heading">#</a></h3>
+<p>The basic day-to-day workflow mirrors Git, with one extra step for large files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stage all new and changed files (small files go via Git, large ones via Git-Annex)</span>
+gin<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add raw recordings from session 2024-06-01&quot;</span>
+
+<span class="c1"># Upload committed changes to the GIN server</span>
+gin<span class="w"> </span>upload
+</pre></div>
+</div>
+<p>To upload only a specific folder or file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gin<span class="w"> </span>upload<span class="w"> </span>data/session_01/
+</pre></div>
+</div>
+</section>
+<section id="downloading-and-syncing">
+<h3>Downloading and syncing<a class="headerlink" href="#downloading-and-syncing" title="Link to this heading">#</a></h3>
+<p>Pull the latest version from the remote repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gin<span class="w"> </span>download
+</pre></div>
+</div>
+<p>For large annexed files, content is not downloaded automatically. Retrieve it explicitly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download the actual content of all annexed files</span>
+gin<span class="w"> </span>get-content<span class="w"> </span>.
+
+<span class="c1"># Or just a specific subfolder</span>
+gin<span class="w"> </span>get-content<span class="w"> </span>data/session_01/
+</pre></div>
+</div>
+</section>
+<section id="checking-repository-status">
+<h3>Checking repository status<a class="headerlink" href="#checking-repository-status" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show which files are modified, untracked, or not yet downloaded</span>
+gin<span class="w"> </span>status
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="git-git-annex-advanced">
+<h2>Git + Git-Annex (advanced)<a class="headerlink" href="#git-git-annex-advanced" title="Link to this heading">#</a></h2>
+<p>If you prefer working directly with Git and Git-Annex — or need to script complex workflows — you can bypass the GIN CLI entirely and use standard Git commands with the GIN remote.</p>
+<section id="one-time-ssh-key-setup">
+<h3>One-time SSH key setup<a class="headerlink" href="#one-time-ssh-key-setup" title="Link to this heading">#</a></h3>
+<p>GIN supports SSH authentication, which avoids entering your password on every push or pull.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate an SSH key pair (skip if you already have one)</span>
+ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w"> </span>-C<span class="w"> </span><span class="s2">&quot;your@email.com&quot;</span>
+
+<span class="c1"># Print the public key and copy the output</span>
+cat<span class="w"> </span>~/.ssh/id_ed25519.pub
+</pre></div>
+</div>
+<p>Paste the public key into your GIN account under <strong>Settings → SSH Keys</strong>.</p>
+<p>Test the connection:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>-T<span class="w"> </span>git@gin.g-node.org
+<span class="c1"># Expected: Hi YourUsername! You&#39;ve successfully authenticated...</span>
+</pre></div>
+</div>
+</section>
+<section id="cloning-with-ssh">
+<h3>Cloning with SSH<a class="headerlink" href="#cloning-with-ssh" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@gin.g-node.org:YourUsername/your-repo-name.git
+<span class="nb">cd</span><span class="w"> </span>your-repo-name
+
+<span class="c1"># Initialise Git-Annex (required once per clone)</span>
+git<span class="w"> </span>annex<span class="w"> </span>init<span class="w"> </span><span class="s2">&quot;my-laptop&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-and-committing-files">
+<h3>Adding and committing files<a class="headerlink" href="#adding-and-committing-files" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let Git-Annex manage large files (replaces the file with a pointer)</span>
+git<span class="w"> </span>annex<span class="w"> </span>add<span class="w"> </span>data/
+
+<span class="c1"># Commit the pointers and any small files tracked by Git</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add session data&quot;</span>
+
+<span class="c1"># Push Git history to GIN</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main
+
+<span class="c1"># Push the large file content to GIN via Git-Annex</span>
+git<span class="w"> </span>annex<span class="w"> </span>copy<span class="w"> </span>--to<span class="w"> </span>origin
+</pre></div>
+</div>
+</section>
+<section id="pulling-updates">
+<h3>Pulling updates<a class="headerlink" href="#pulling-updates" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fetch Git history and annex metadata</span>
+git<span class="w"> </span>pull
+
+<span class="c1"># Download the actual content of annexed files</span>
+git<span class="w"> </span>annex<span class="w"> </span>get<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="checking-annex-status">
+<h3>Checking annex status<a class="headerlink" href="#checking-annex-status" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># See which files have their content locally and which are remote-only</span>
+git<span class="w"> </span>annex<span class="w"> </span>status
+
+<span class="c1"># Verify file integrity</span>
+git<span class="w"> </span>annex<span class="w"> </span>fsck
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="approaches-at-a-glance">
+<h2>Approaches at a glance<a class="headerlink" href="#approaches-at-a-glance" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Web interface</p></th>
+<th class="head"><p>GIN CLI</p></th>
+<th class="head"><p>Git + Git-Annex</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Setup effort</p></td>
+<td><p>Minimal</p></td>
+<td><p>Low</p></td>
+<td><p>Medium</p></td>
+</tr>
+<tr class="row-odd"><td><p>Upload speed</p></td>
+<td><p>Slow</p></td>
+<td><p>Fast</p></td>
+<td><p>Fast</p></td>
+</tr>
+<tr class="row-even"><td><p>Automation / scripting</p></td>
+<td><p>No</p></td>
+<td><p>Partial</p></td>
+<td><p>Full</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fine-grained Git control</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Recommended for</p></td>
+<td><p>Quick sharing</p></td>
+<td><p>Most research workflows</p></td>
+<td><p>Power users</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="alternatives-openneuro">
+<h2>Alternatives: OpenNeuro<a class="headerlink" href="#alternatives-openneuro" title="Link to this heading">#</a></h2>
+<p>An alternate solution that is very common  of datasets is <a class="reference external" href="https://openneuro.org/">OpenNeuro</a>.</p>
+<p>OpenNeuro is an repository solution to host and share BIDS-compatible datasets, ensuring both accessibility and compliance with community standards. It is designed with the idea of data indexing and searching in mind therefore, but it doesn’t provide the option of non-public datasets.</p>
+<p>It is therfore particularly valuable for researchers looking to share data broadly with the community. It ensures reproducibility by providing an accessible, long-term data repository, implementing automatic BIDS Validation, but lacks the version control system unerlying GIN.</p>
+<p>Find more info in the <a class="reference external" href="https://handbook.datalad.org/en/latest/usecases/openneuro.html">Datalad aHandbook section on OpenNeuro</a></p>
+</section>
 <section id="datalad">
 <h2>DataLad<a class="headerlink" href="#datalad" title="Link to this heading">#</a></h2>
-<p>In life, some things are required by funding agencies, some are nice to have, and then there are those things that, once discovered, make your life (and neuroscience) significantly better. You could say this about data sharing in general, but DataLad exemplifies this perfectly.</p>
-<p>One efficient and reproducible way to work across multiple platforms is through the DataLad library. It focuses on true data provenance by providing an interface to integrate data repositories, local version control, and automatic metadata creation on the fly, e.g.</p>
+<p>In life, some things are required by funding agencies, some are nice to have, and then there are those things that, once discovered, make your life (and neuroscience) significantly better. DataLad exemplifies this perfectly.</p>
+<p>DataLad focuses on true data provenance by providing an interface to integrate data repositories, local version control, and automatic metadata creation/maintenance, e.g.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- Recording the origin of datasets, including where and when they were created or obtained
 - Tracking transformations, such as scripts applied, parameters used, and the sequence of analysis steps
 - Storing and adding to metadata that identifies contributors and captures the context of data modifications
@@ -620,7 +809,7 @@ The GIN CLI extends the platform’s capabilities beyond the web interface. It a
 <p class="admonition-title">Question: WTF is Data Provenance?</p>
 <p>Data provenance refers to the comprehensive documentation of the origins, transformations, and journey of data throughout its lifecycle. It ensures that every step in data processing is transparently recorded, enabling both researchers and external parties to verify and reproduce results.</p>
 </div>
-<p>Building on this idea, DataLad is best suited for keeping track of data, facilitating sharing, and introducing reproducibility to workflows. For instance, it ensures that associated scripts, data transformations, and workflows are easy to track and re-run—particularly useful for preprocessing tasks (ever tried doing that for someone else’s dataset?).</p>
+<p>Building on the Idea of having a dedicated tool to integrate provenance into data managment workflows, it allows for keeping track of data, facilitats sharing by providing documentation and common commands. It ensures that associated scripts, data transformations, and workflows are easy to track and re-run—particularly useful for preprocessing tasks.</p>
 <p>The main <code class="docutils literal notranslate"><span class="pre">features</span></code>:</p>
 <ul class="simple">
 <li><p>command-line tool build on Python</p></li>
@@ -1366,13 +1555,6 @@ ds000003-qc $ datalad containers-run \
 <p><a class="reference external" href="https://psychoinformatics-de.github.io/rdm-course/">Full Course on Research Data Management using Datalad</a></p>
 <p><a class="reference external" href="https://handbook.datalad.org/en/latest/code_from_chapters/yale.html">Quick course; Running and publishing Data using Datalad</a></p>
 </section>
-<section id="openneuro">
-<h2>OpenNeuro<a class="headerlink" href="#openneuro" title="Link to this heading">#</a></h2>
-<p>An alternate solution that is very common  of datasets is <a class="reference external" href="https://openneuro.org/">OpenNeuro</a>.</p>
-<p>OpenNeuro is an repository solution to host and share BIDS-compatible datasets, ensuring both accessibility and compliance with community standards. It is designed with the idea of data indexing and searching in mind therefore, but it doesn’t provide the option of non-public datasets.</p>
-<p>It is therfore particularly valuable for researchers looking to share data broadly with the community. It ensures reproducibility by providing an accessible, long-term data repository, implementing automatic BIDS Validation, but lacks the version control system unerlying GIN.</p>
-<p>Find more info in the <a class="reference external" href="https://handbook.datalad.org/en/latest/usecases/openneuro.html">Datalad aHandbook section on OpenNeuro</a></p>
-</section>
 <section id="id5">
 <h2>Sources<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
 <p>A lot of this info here builds on Datalad tutorials and the DataLad Handbook!</p>
@@ -1460,9 +1642,27 @@ ds000003-qc $ datalad containers-run \
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-and-upload-files">2. Add and Upload Files:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#make-it-public-share">3. Make it public/Share</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges">Challenges</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gin-cli">GIN Cli</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gin-cli">GIN CLI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-in">Logging in</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-a-repository">Setting up a repository</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recording-and-uploading-changes">Recording and uploading changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-and-syncing">Downloading and syncing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-repository-status">Checking repository status</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-git-annex-advanced">Git + Git-Annex (advanced)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-time-ssh-key-setup">One-time SSH key setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cloning-with-ssh">Cloning with SSH</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-and-committing-files">Adding and committing files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pulling-updates">Pulling updates</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-annex-status">Checking annex status</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approaches-at-a-glance">Approaches at a glance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternatives-openneuro">Alternatives: OpenNeuro</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datalad">DataLad</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-how-to-get-started">Usage/How to get started:</a><ul class="nav section-nav flex-column">
@@ -1519,7 +1719,6 @@ ds000003-qc $ datalad containers-run \
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-using-published-datasets">Summary - Using published datasets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additinal-information-tutorials">Additinal Information/Tutorials</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openneuro">OpenNeuro</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Sources</a></li>
 </ul>
 </li>
