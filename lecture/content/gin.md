@@ -121,24 +121,24 @@ Or initialise a fresh local folder and link it to a new remote repository:
 ```bash
 mkdir my-dataset && cd my-dataset
 gin init
-gin add-remote origin YourUsername/your-repo-name
+gin add-remote --create origin gin:Username/dataset_name
 ```
 
 ### Recording and uploading changes
-The basic day-to-day workflow mirrors Git, with one extra step for large files:
+The basic day-to-day workflow mirrors Git, with one extra step for large files that we will explore later on:
 
 ```bash
 # Stage all new and changed files (small files go via Git, large ones via Git-Annex)
 gin commit -m "Add raw recordings from session 2024-06-01"
 
 # Upload committed changes to the GIN server
-gin upload
+gin upload .
 ```
 
 To upload only a specific folder or file:
 
 ```bash
-gin upload data/session_01/
+gin upload test/data/session_01/
 ```
 
 ### Downloading and syncing
@@ -165,18 +165,18 @@ gin status
 ```
 
 ---
+## One-time SSH key setup
 
-## Git + Git-Annex (advanced)
-If you prefer working directly with Git and Git-Annex — or need to script complex workflows — you can bypass the GIN CLI entirely and use standard Git commands with the GIN remote.
-
-### One-time SSH key setup
-GIN supports SSH authentication, which avoids entering your password on every push or pull.
+SSH authentication lets you push and pull without entering your password each time. This is a one-time setup per machine (per GIN account), not something you repeat for each dataset.
 
 ```bash
-# Generate an SSH key pair (skip if you already have one)
+# Check for an existing key first
+ls -la ~/.ssh/*.pub
+
+# Only if you have none, generate one (press Enter to accept the default path)
 ssh-keygen -t ed25519 -C "your@email.com"
 
-# Print the public key and copy the output
+# Print whichever public key you want to use, and copy the output
 cat ~/.ssh/id_ed25519.pub
 ```
 
@@ -187,43 +187,32 @@ Test the connection:
 ```bash
 ssh -T git@gin.g-node.org
 # Expected: Hi YourUsername! You've successfully authenticated...
+# (the "GIN does not provide shell access" notice is normal)
 ```
 
-### Cloning with SSH
-```bash
-git clone git@gin.g-node.org:YourUsername/your-repo-name.git
-cd your-repo-name
+## Direct Git + Git-Annex workflow
 
-# Initialise Git-Annex (required once per clone)
-git annex init "my-laptop"
-```
+Prerequisite: the repository must already exist on the GIN server. Create it once with `gin create your-repo-name` or via the "+" on gin.g-node.org — raw Git cannot create it for you.
 
-### Adding and committing files
 ```bash
-# Let Git-Annex manage large files (replaces the file with a pointer)
+# Initialise the local repository and git-annex
+git init
+git annex init "my-dataset"
+
+# Annex the large data files, stage the small ones in plain Git
 git annex add data/
+git add .
 
-# Commit the pointers and any small files tracked by Git
+# Record the commit
 git commit -m "Add session data"
 
-# Push Git history to GIN
+# Point at the GIN repo (already created on the server) and push
+git remote add origin git@gin.g-node.org:YourUsername/your-repo-name.git
 git push origin main
 
-# Push the large file content to GIN via Git-Annex
-git annex copy --to origin
-```
+# Push the annexed file content and sync metadata
+git annex sync --content
 
-### Pulling updates
-```bash
-# Fetch Git history and annex metadata
-git pull
-
-# Download the actual content of annexed files
-git annex get .
-```
-
-### Checking annex status
-```bash
 # See which files have their content locally and which are remote-only
 git annex status
 
