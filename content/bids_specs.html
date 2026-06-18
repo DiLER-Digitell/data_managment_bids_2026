@@ -468,7 +468,6 @@ document.write(`
 <li><p>a growing number of data analysis tools and apps support BIDS-formatted datasets</p></li>
 <li><p>adopting BIDS enhances compatibility and facilitates analysis workflows</p></li>
 </ul>
-<br>
 </section>
 <section id="facilitates-public-data-sharing">
 <h3>2. Facilitates Public Data Sharing:<a class="headerlink" href="#facilitates-public-data-sharing" title="Link to this heading">#</a></h3>
@@ -476,14 +475,12 @@ document.write(`
 <li><p>public databases such as <a class="reference external" href="http://OpenNeuro.org">OpenNeuro.org</a> require BIDS-compliant datasets.</p></li>
 <li><p>journals increasingly require public sharing of datasets; using BIDS minimizes the effort and time required for curation and publication.</p></li>
 </ul>
-<br>
 </section>
 <section id="validation-tools">
 <h3>3. Validation Tools:<a class="headerlink" href="#validation-tools" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>tools like the BIDS Validator check dataset integrity and help identify missing or incorrect data entries.</p></li>
 </ul>
-<br>
 </section>
 <section id="alignment-with-fair-principles">
 <h3>4. Alignment with FAIR Principles<a class="headerlink" href="#alignment-with-fair-principles" title="Link to this heading">#</a></h3>
@@ -505,9 +502,9 @@ The adoption of BIDS aligns with the FAIR principles, enhancing the scientific i
 <h3>The core specification<a class="headerlink" href="#the-core-specification" title="Link to this heading">#</a></h3>
 <p>The Brain Imaging Data Structure (BIDS) specification categorizes its files into REQUIRED, RECOMMENDED, and OPTIONAL, depending on their importance for data interpretation and utility.</p>
 <p><em>Requirement levels:</em></p>
-<p>REQUIRED: Data cannot be interpreted without this information (or the ambiguity is unacceptably high)</p>
-<p>RECOMMENDED: Interpretation/utility would be dramatically improved with this information</p>
-<p>OPTIONAL: Users and/or tools might find it useful to have this information</p>
+<p><code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>: Data cannot be interpreted without this information (or the ambiguity is unacceptably high)</p>
+<p><code class="docutils literal notranslate"><span class="pre">RECOMMENDED</span></code>: Interpretation/utility would be dramatically improved with this information</p>
+<p><code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code>: Users and/or tools might find it useful to have this information</p>
 <p><em>Modality vs. data type:</em></p>
 <p>BIDS draws a distinction between these two concepts, and it’s worth being precise about it.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">type</span></code>: functional grouping of data that determines the <em>directory</em> a file will be integrated in.</p>
@@ -533,13 +530,13 @@ The adoption of BIDS aligns with the FAIR principles, enhancing the scientific i
 </pre></div>
 </div>
 <p>The <strong>project</strong> folder does not have to be named in a specific manner, but it should be descriptive.</p>
-<p><strong>code</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">Code</span></code></p>
 <p>Here you can store any code relating to the presentation of stimuli, preprocessing of data etc.</p>
-<p><strong>sourcedata</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">sourcedata</span></code></p>
 <p>Data source material in its original, non-BIDS form — for example original DICOMs or vendor-native recordings, before they were converted/curated into the BIDS layout. Note this is distinct from ‘raw’ data, which in BIDS terminology is the curated data inside the subject folders.</p>
-<p><strong>stimuli</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">stimuli</span></code></p>
 <p>Self-explanatory. Here you can store the stimuli used during data collection.</p>
-<p><strong>subject-folder structure</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">subject-folder</span> <span class="pre">structure</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>subject/:
       - There should be one subject folder for each participant. Naming of subject folders has to be as follows:
             sub-participant label
@@ -556,7 +553,6 @@ The adoption of BIDS aligns with the FAIR principles, enhancing the scientific i
 
 </pre></div>
 </div>
-<br>
 <p>An example from the BIDS Specification would look something like this</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ds001
 ├── dataset_description.json
@@ -586,7 +582,6 @@ The adoption of BIDS aligns with the FAIR principles, enhancing the scientific i
 ...
 ...
 └── task-balloonanalogrisktask_bold.json
-
 
 </pre></div>
 </div>
@@ -627,7 +622,6 @@ The adoption of BIDS aligns with the FAIR principles, enhancing the scientific i
 <ol class="arabic">
 <li><p><strong>Additional Dataset-Level Metadata</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span> README: General information about the dataset, such as study purpose or known issues.
-
  CHANGES: Version history of the dataset, useful for tracking updates.
 </pre></div>
 </div>

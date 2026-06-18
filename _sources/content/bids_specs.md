@@ -15,18 +15,13 @@ Most of the Information presetened here is taken from the official documentation
 - a growing number of data analysis tools and apps support BIDS-formatted datasets
 - adopting BIDS enhances compatibility and facilitates analysis workflows
 
-<br>
 
 ### 2. Facilitates Public Data Sharing:
 - public databases such as OpenNeuro.org require BIDS-compliant datasets.
 - journals increasingly require public sharing of datasets; using BIDS minimizes the effort and time required for curation and publication.
 
-<br>
-
 ### 3. Validation Tools:
 - tools like the BIDS Validator check dataset integrity and help identify missing or incorrect data entries.
-
-<br>
 
 ### 4. Alignment with FAIR Principles
 
@@ -50,11 +45,11 @@ The Brain Imaging Data Structure (BIDS) specification categorizes its files into
 
 *Requirement levels:*
 
-REQUIRED: Data cannot be interpreted without this information (or the ambiguity is unacceptably high)
+`REQUIRED`: Data cannot be interpreted without this information (or the ambiguity is unacceptably high)
 
-RECOMMENDED: Interpretation/utility would be dramatically improved with this information
+`RECOMMENDED`: Interpretation/utility would be dramatically improved with this information
 
-OPTIONAL: Users and/or tools might find it useful to have this information
+`OPTIONAL`: Users and/or tools might find it useful to have this information
 
 
 *Modality vs. data type:*
@@ -85,19 +80,19 @@ Within BIDS folders have to be structured and named in a specific way. The hiera
 
 The **project** folder does not have to be named in a specific manner, but it should be descriptive.
 
-**code**
+`Code`
 
 Here you can store any code relating to the presentation of stimuli, preprocessing of data etc.
 
-**sourcedata**
+`sourcedata`
 
 Data source material in its original, non-BIDS form — for example original DICOMs or vendor-native recordings, before they were converted/curated into the BIDS layout. Note this is distinct from 'raw' data, which in BIDS terminology is the curated data inside the subject folders.
 
-**stimuli**
+`stimuli`
 
 Self-explanatory. Here you can store the stimuli used during data collection.
 
-**subject-folder structure**
+`subject-folder structure`
 
 ```
 subject/:
@@ -115,8 +110,6 @@ subject/:
                   This folder shows the modality of the acquired data, like EEG data (`eeg`), behavioral data (`beh`), fMRI data (`func`) or much more. You can find a list of modalities and their naming conventions [here](https://bids-website.readthedocs.io/en/latest/getting_started/folders_and_files/folders.html)
 
 ```
-
-<br>
 
 
 An example from the BIDS Specification would look something like this
@@ -151,9 +144,7 @@ ds001
 ...
 └── task-balloonanalogrisktask_bold.json
 
-
 ```
-
 
 ## Derivatives
 
@@ -198,7 +189,6 @@ These files significantly enhance the interpretability and utility of the datase
 1. **Additional Dataset-Level Metadata**:
 
         README: General information about the dataset, such as study purpose or known issues.
-
         CHANGES: Version history of the dataset, useful for tracking updates.
 
 2. **Additional Participant Information**:
@@ -222,6 +212,7 @@ We'll have a look at some real life implementations shortly using the public exa
 ### dataset_description.json:
 
 `Purpose:` Acts as a reference document for dataset context. Facilitates proper citation and acknowledgment. A structured JSON file containing essential metadata to identify and describe the dataset.
+
 ```
 
 
