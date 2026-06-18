@@ -3,6 +3,7 @@ format: jb-book
 chapters:
 - file: content/bids_specs.md
 - file: content/gin.md
+- file: introduction/intro.ipynb
 - file: general_information/setup
 - file: general_information/prerequisites
   sections:
@@ -10,4 +11,6 @@ chapters:
     - file: general_information/prerequisites/excercise_intro_git.ipynb
     - file: general_information/prerequisites/github.ipynb
 - file: general_information/CoC
+
+
 
