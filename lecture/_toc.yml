@@ -1,4 +1,4 @@
-root: general_information/bids_specs
+root: general_information/overview
 format: jb-book
 chapters:
 - file: content/bids_specs.md
