@@ -1,4 +1,4 @@
-# BIDS (Brain Imaging Data Structure)
+# Main Course: BIDS (Brain Imaging Data Structure)
 
 ##  Motivation
 
