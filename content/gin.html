@@ -687,7 +687,11 @@ ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="
 cat<span class="w"> </span>~/.ssh/id_ed25519.pub
 </pre></div>
 </div>
-<p>Paste the public key into your GIN account under <strong>Settings → SSH Keys</strong>.</p>
+<p>The output is a single line that looks like:
+<code class="docutils literal notranslate"><span class="pre">ssh-ed25519</span> <span class="pre">AAAAC3NzaC1lZDI1NTE5AAAAI...long-base64-blob...x9k</span> <span class="pre">your&#64;email.com</span></code></p>
+<p>Now go to Settings → SSH Keys → Add Key. There are two fields:
+<code class="docutils literal notranslate"><span class="pre">Key</span> <span class="pre">Name</span></code> — just a label for you to recognise this key later; it has no technical effect. E.g. name it after the machine the key lives on, e.g. macbook-pro or lab-workstation, so you can revoke the right one if a laptop is lost.
+<code class="docutils literal notranslate"><span class="pre">Content</span></code> — paste the entire public key line from the cat output here: the ssh-ed25519 prefix, the long base64 blob, and the trailing comment, all on one line.</p>
 <p>Test the connection:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>-T<span class="w"> </span>git@gin.g-node.org
 <span class="c1"># Expected: Hi YourUsername! You&#39;ve successfully authenticated...</span>

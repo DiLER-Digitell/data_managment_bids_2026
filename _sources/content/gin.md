@@ -180,7 +180,13 @@ ssh-keygen -t ed25519 -C "your@email.com"
 cat ~/.ssh/id_ed25519.pub
 ```
 
-Paste the public key into your GIN account under **Settings → SSH Keys**.
+The output is a single line that looks like:
+`ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...long-base64-blob...x9k your@email.com`
+
+Now go to Settings → SSH Keys → Add Key. There are two fields:
+`Key Name` — just a label for you to recognise this key later; it has no technical effect. E.g. name it after the machine the key lives on, e.g. macbook-pro or lab-workstation, so you can revoke the right one if a laptop is lost.
+`Content` — paste the entire public key line from the cat output here: the ssh-ed25519 prefix, the long base64 blob, and the trailing comment, all on one line.
+
 
 Test the connection:
 
