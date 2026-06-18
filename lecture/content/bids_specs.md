@@ -6,7 +6,8 @@ Scientific projects, especially in the neurosciences are necessarily complex, be
 
 In the past most Neuroimaging datasets have often been organized inconsistently, even within the same lab. This lack of standardization can lead to a lack of interoperability of datasets and processing pipelines, in turn, leading to misunderstandings, wasted time, and inefficiencies in collaboration and reuse. Below, we outline the benefits of adopting a standardized approach, specifically the Brain Imaging Data Structure (BIDS)
 
-Most of the Information presetened here is taken from the official documentation, which you can check out here: [bids.neuroimaging.io](bids.neuroimaging.io)
+Most of the Information presetened here is taken from the official documentation, which you can check out here: [Official documentaion](https://bids.neuroimaging.io/getting_started/)
+
 <br>
 
 ### BIDS adavantages:
