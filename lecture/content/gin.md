@@ -1,4 +1,4 @@
-# G-Node/GIN
+# Main Course: G-Node/GIN
 
 
 BIDS gives us a starting point for standardizing neuroscience data, but this alone does not ensure acessability or reproducibility. We need tools that go beyond mere standards.
