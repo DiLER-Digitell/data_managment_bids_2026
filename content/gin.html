@@ -639,6 +639,7 @@ gin<span class="w"> </span>add-remote<span class="w"> </span>--create<span class
 <h3>Recording and uploading changes<a class="headerlink" href="#recording-and-uploading-changes" title="Link to this heading">#</a></h3>
 <p>The basic day-to-day workflow mirrors Git, with one extra step for large files that we will explore later on:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stage all new and changed files (small files go via Git, large ones via Git-Annex)</span>
+git<span class="w"> </span>add<span class="w"> </span>.
 gin<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add raw recordings from session 2024-06-01&quot;</span>
 
 <span class="c1"># Upload committed changes to the GIN server</span>
